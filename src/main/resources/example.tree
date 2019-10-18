@@ -1,0 +1,12 @@
+(/, folder, user=root
+    (usr, folder
+        (local, folder
+            (bin, folder
+                (cmake, file, executable=true)
+            )
+        )
+    )
+    (etc, folder
+        (hosts, file, executable=false)
+    )
+)

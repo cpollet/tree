@@ -1,0 +1,16 @@
+{
+    "name": "{{ name }}",
+    "type": "{{ type }}"
+
+    {% for attr in attributes %}
+        ,
+        "{{ attr.key }}": "{{ attr.value }}"
+    {% endfor %}
+
+    {% if (children|length > 0) %}
+        ,
+        "children": [
+            {{ join(children, ',') }}
+        ]
+    {% endif %}
+}
