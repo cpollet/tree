@@ -2,10 +2,17 @@
     "name": "{{ name }}",
     "type": "{{ type }}"
 
+    {% if (attributes|length > 0) %}
+    ,
+    "attributes": {
     {% for attr in attributes %}
-        ,
         "{{ attr.key }}": "{{ attr.value }}"
+        {% if (loop.last == false) %}
+        ,
+        {% endif %}
     {% endfor %}
+    }
+    {% endif %}
 
     {% if (children|length > 0) %}
         ,
