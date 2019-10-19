@@ -15,6 +15,7 @@
  */
 package net.cpollet.tree;
 
+import com.beust.jcommander.JCommander;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import net.cpollet.tree.ast.AttrsVisitor;
@@ -29,25 +30,44 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Main {
+    private final Parameters parameters;
+
+    public Main(Parameters parameters) {
+        this.parameters = parameters;
+    }
+
     public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
+        Parameters parameters = new Parameters();
+
+        JCommander jcommander = JCommander.newBuilder()
+                .addObject(parameters)
+                .build();
+
+        jcommander.parse(args);
+
+        if (!parameters.isValid()) {
             Properties props = new Properties();
             props.load(Main.class.getResourceAsStream("/maven/build.properties"));
-            System.out.println(String.format("%s version %s (%s)%nUsage: java -jar %s.jar FILE",
+            jcommander.setProgramName(String.format("java -jar %s", props.getProperty("build.name")));
+            System.out.println(String.format("%s version %s (%s)",
                     props.getProperty("build.name"),
                     props.getProperty("build.version"),
-                    props.getProperty("build.date"),
-                    props.getProperty("build.name")
+                    props.getProperty("build.date")
             ));
-            System.exit(0);
+            jcommander.usage();
+            System.exit(1);
         }
 
+        new Main(parameters).run();
+    }
+
+    private void run() throws IOException {
         Node node = new NodeVisitor(new AttrsVisitor()).visit(
                 new TreeParser(
                         new CommonTokenStream(
                                 new TreeLexer(
                                         CharStreams.fromStream(
-                                                new FileInputStream(args[0])
+                                                new FileInputStream(parameters.getFilename())
                                         )
                                 )
                         )
