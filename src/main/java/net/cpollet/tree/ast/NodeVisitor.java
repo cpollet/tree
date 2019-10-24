@@ -31,8 +31,8 @@ public class NodeVisitor extends TreeBaseVisitor<Node> {
     @Override
     public Node visitNode(TreeParser.NodeContext ctx) {
         return new Node(
-                ctx.nodeName.getText().replace("\\ ", " "),
-                ctx.nodeType.getText().replace("\\ ", " "),
+                new EscapedText(ctx.nodeName.getText()).unescape(),
+                new EscapedText(ctx.nodeType.getText()).unescape(),
                 ctx.attrs() == null ?
                         Collections.emptyMap() :
                         ctx.attrs().accept(attrsVisitor),

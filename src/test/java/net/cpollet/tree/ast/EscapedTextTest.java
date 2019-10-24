@@ -15,26 +15,21 @@
  */
 package net.cpollet.tree.ast;
 
-import net.cpollet.tree.TreeBaseVisitor;
-import net.cpollet.tree.TreeParser;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+class EscapedTextTest {
+    @Test
+    void unescape() {
+        Assertions.assertThat(
+                new EscapedText("a#!\\(\\)\\=\\ \\,\\\\").unescape()
+        ).isEqualTo("a#!()= ,\\");
+    }
 
-public class AttrsVisitor extends TreeBaseVisitor<Map<String, String>> {
-    @Override
-    public Map<String, String> visitAttrs(TreeParser.AttrsContext ctx) {
-        Map<String, String> map = new HashMap<>();
-
-        map.put(
-                new EscapedText(ctx.attr().key.getText()).unescape(),
-                new EscapedText(ctx.attr().value.getText()).unescape()
-        );
-
-        if (ctx.attrs() != null) {
-            map.putAll(ctx.attrs().accept(this));
-        }
-
-        return map;
+    @Test
+    void escape() {
+        Assertions.assertThat(
+                new EscapedText("a#!()= ,\\").escape()
+        ).isEqualTo("a#!\\(\\)\\=\\ \\,\\\\");
     }
 }

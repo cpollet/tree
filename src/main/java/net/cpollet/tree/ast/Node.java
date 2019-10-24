@@ -56,14 +56,14 @@ public class Node {
     @Override
     public String toString() {
         return String.format("(%s, %s%s%s)",
-                name.replace(" ", "\\ "),
-                type.replace(" ", "\\ "),
+                new EscapedText(name).escape(),
+                new EscapedText(type).escape(),
                 attributes.isEmpty() ?
                         "" :
                         ", " + attributes.entrySet().stream()
                                 .map(e -> String.format("%s=%s",
-                                        e.getKey().replace(" ", "\\ "),
-                                        e.getValue().replace(" ", "\\ ")
+                                        new EscapedText(e.getKey()).escape(),
+                                        new EscapedText(e.getValue()).escape()
                                 ))
                                 .collect(Collectors.joining(", ")),
                 children.isEmpty() ?

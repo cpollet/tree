@@ -1,6 +1,6 @@
 grammar Tree;
 
-CHARS: ( [-_.0-9a-zA-Z/] | '\\ ' )+ ;
+CHARS: ( ~[ \t\r\n\u000C,=()\\] | '\\ ' | '\\,' | '\\=' | '\\(' | '\\)' | '\\\\' )+ ;
 WS: [ \t\r\n\u000C]+ -> channel(HIDDEN) ;
 LINE_COMMENT: '//' ~[\r\n]* -> channel(HIDDEN) ;
 
