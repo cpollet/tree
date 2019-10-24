@@ -1,4 +1,4 @@
-package net.cpollet.tree;/*
+package net.cpollet.tree.ast;/*
  * Copyright 2019 Christophe Pollet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,9 @@ package net.cpollet.tree;/*
  * limitations under the License.
  */
 
+import net.cpollet.tree.Main;
+import net.cpollet.tree.TreeLexer;
+import net.cpollet.tree.TreeParser;
 import net.cpollet.tree.ast.AttrsVisitor;
 import net.cpollet.tree.ast.NodeVisitor;
 import org.antlr.v4.runtime.CharStreams;
