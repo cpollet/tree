@@ -41,5 +41,20 @@ class ParserTest {
         ).isEqualTo("(/, folder, user=root (usr, folder (local, folder (bin, folder (cmake, file, executable=true))))" +
                 "(etc, folder (hosts, file, executable=false)))");
     }
-
+    @Test
+    void test_withSpaces() throws IOException {
+        Assertions.assertThat(
+                new NodeVisitor(new AttrsVisitor()).visit(
+                        new TreeParser(
+                                new CommonTokenStream(
+                                        new TreeLexer(
+                                                CharStreams.fromStream(
+                                                        Main.class.getResourceAsStream("/spaces.tree")
+                                                )
+                                        )
+                                )
+                        ).node()
+                ).toString()
+        ).isEqualTo("(node\\ a, type\\ a, attr\\ a=val\\ a)");
+    }
 }

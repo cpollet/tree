@@ -56,12 +56,15 @@ public class Node {
     @Override
     public String toString() {
         return String.format("(%s, %s%s%s)",
-                name,
-                type,
+                name.replace(" ", "\\ "),
+                type.replace(" ", "\\ "),
                 attributes.isEmpty() ?
                         "" :
                         ", " + attributes.entrySet().stream()
-                                .map(e -> e.getKey() + "=" + e.getValue())
+                                .map(e -> String.format("%s=%s",
+                                        e.getKey().replace(" ", "\\ "),
+                                        e.getValue().replace(" ", "\\ ")
+                                ))
                                 .collect(Collectors.joining(", ")),
                 children.isEmpty() ?
                         "" :

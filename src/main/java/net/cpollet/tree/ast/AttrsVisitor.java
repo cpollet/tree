@@ -27,8 +27,8 @@ public class AttrsVisitor extends TreeBaseVisitor<Map<String, String>> {
         Map<String, String> map = new HashMap<>();
 
         map.put(
-                ctx.attr().key.getText(),
-                ctx.attr().value.getText()
+                ctx.attr().key.getText().replace("\\ ", " "),
+                ctx.attr().value.getText().replace("\\ ", " ")
         );
 
         if (ctx.attrs() != null) {
