@@ -31,7 +31,7 @@ public class JsonVisitor implements Visitor<String> {
     private static final String TEMPLATE_PATH = JsonVisitor.class.getPackage().getName()
             .replace(".", File.separator) + File.separator;
 
-    private static final Map<Class, JtwigTemplate> templates = ImmutableMap.<java.lang.Class, JtwigTemplate>builder()
+    private static final Map<Class<?>, JtwigTemplate> templates = ImmutableMap.<Class<?>, JtwigTemplate>builder()
             .put(Node.class, classpathTemplate(TEMPLATE_PATH + "node.twig"))
             .build();
 
