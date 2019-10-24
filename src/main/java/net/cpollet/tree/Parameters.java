@@ -17,15 +17,20 @@ package net.cpollet.tree;
 
 import com.beust.jcommander.Parameter;
 
+import java.util.Optional;
+
 public class Parameters {
-    @Parameter(description = "FILE")
+    @Parameter(names = "-h", description = "Display this help message.", help = true)
+    private boolean help = false;
+
+    @Parameter(names = "-f", description = "Read from file. If not set, read from STDIN.")
     private String filename;
 
-    public boolean isValid() {
-        return filename != null && !filename.isEmpty();
+    public boolean help() {
+        return help;
     }
 
-    public String getFilename() {
-        return filename;
+    public Optional<String> filename() {
+        return Optional.ofNullable(filename);
     }
 }

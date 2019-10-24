@@ -26,7 +26,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Main {
@@ -45,7 +47,7 @@ public class Main {
 
         jcommander.parse(args);
 
-        if (!parameters.isValid()) {
+        if (parameters.help()) {
             Properties props = new Properties();
             props.load(Main.class.getResourceAsStream("/maven/build.properties"));
             jcommander.setProgramName(String.format("java -jar %s", props.getProperty("build.name")));
@@ -55,10 +57,19 @@ public class Main {
                     props.getProperty("build.date")
             ));
             jcommander.usage();
-            System.exit(1);
+            System.exit(0);
         }
 
         new Main(parameters).run();
+    }
+
+    private InputStream inputStream(String filename) {
+        try {
+            return new FileInputStream(filename);
+        }
+        catch (FileNotFoundException e) {
+            throw new Error("Cannot open " + filename);
+        }
     }
 
     private void run() throws IOException {
@@ -67,7 +78,10 @@ public class Main {
                         new CommonTokenStream(
                                 new TreeLexer(
                                         CharStreams.fromStream(
-                                                new FileInputStream(parameters.getFilename())
+                                                parameters.filename()
+                                                        .map(this::inputStream)
+                                                        .orElse(System.in)
+
                                         )
                                 )
                         )
